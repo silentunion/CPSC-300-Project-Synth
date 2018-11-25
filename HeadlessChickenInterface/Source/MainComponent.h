@@ -9,6 +9,8 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "PluginViewport.h"
+#include "AudioMenu.h"
 
 //==============================================================================
 /*
@@ -29,7 +31,8 @@ public:
 private:
     //==============================================================================
     // Your private member variables go here...
-	String currentSizeAsString;
-
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
+	String currentSizeAsString;
+	AudioMenu am;
+	PluginViewport plugs;
 };

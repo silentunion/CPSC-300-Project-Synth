@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="AOIJ0d" name="HeadlessChickenInterface" projectType="guiapp"
-              jucerVersion="5.3.2" companyName="Headless Chicken Brigade">
+              jucerVersion="5.4.1" companyName="Headless Chicken Brigade">
   <MAINGROUP id="g4JyLx" name="HeadlessChickenInterface">
     <GROUP id="{2F8EE120-CE61-CD28-312C-460B92DDF402}" name="Source">
-      <FILE id="Ykocua" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
+      <FILE id="ss7y57" name="AudioMenu.cpp" compile="1" resource="0" file="Source/AudioMenu.cpp"/>
+      <FILE id="kYWTXp" name="AudioMenu.h" compile="1" resource="0" file="Source/AudioMenu.h"/>
+      <FILE id="JbsiRZ" name="PluginViewport.cpp" compile="1" resource="0"
+            file="Source/PluginViewport.cpp"/>
+      <FILE id="q92xNV" name="PluginViewport.h" compile="1" resource="0"
+            file="Source/PluginViewport.h"/>
+      <FILE id="Ykocua" name="MainComponent.h" compile="1" resource="0" file="Source/MainComponent.h"/>
       <FILE id="aFWO8i" name="MainComponent.cpp" compile="1" resource="0"
             file="Source/MainComponent.cpp"/>
       <FILE id="o1p1PX" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>

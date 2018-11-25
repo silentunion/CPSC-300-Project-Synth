@@ -11,7 +11,14 @@
 //==============================================================================
 MainComponent::MainComponent()
 {
-    setSize (600, 400);
+	//toolbar init
+	addAndMakeVisible(am);
+
+	//plugin viewer init
+	addAndMakeVisible(plugs);
+
+	//window init
+	setSize (600, 400);
 }
 
 MainComponent::~MainComponent()
@@ -34,5 +41,8 @@ void MainComponent::resized()
     // This is called when the MainComponent is resized.
     // If you add any child components, this is where you should
     // update their positions.
+	auto area = getLocalBounds();
+	am.setBounds(area.removeFromTop(30));
 	currentSizeAsString = String(getWidth()) + " X " + String(getHeight());
+	plugs.setBounds(area.removeFromLeft(jmax(80, getLocalBounds().getWidth() / 4)));
 }
