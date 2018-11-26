@@ -12,8 +12,11 @@
 #include "AudioMenu.h"
 
 //==============================================================================
-AudioMenu::AudioMenu()
+AudioMenu::AudioMenu(AudioDeviceSelectorComponent * s)
 {
+	selector = s;
+	
+	currentColour = getLookAndFeel().findColour(ResizableWindow::backgroundColourId);
 	menuBar.reset(new MenuBarComponent(this));
 	addAndMakeVisible(menuBar.get());
 	setApplicationCommandManagerToWatch(&commandManager);
@@ -29,7 +32,7 @@ AudioMenu::~AudioMenu()
 
 void AudioMenu::paint(Graphics& g)
 {
-	g.fillAll(getLookAndFeel().findColour(ResizableWindow::backgroundColourId).darker());
+	g.fillAll(currentColour);
 }
 
 void AudioMenu::resized()
@@ -49,6 +52,7 @@ PopupMenu AudioMenu::getMenuForIndex(int menuIndex, const String&)
 	if (menuIndex == 0)
 	{
 		menu.addCommandItem(&commandManager, CommandIDs::configureAudio);
+		menu.addCommandItem(&commandManager, CommandIDs::addPlugin);
 	}
 
 	return menu;
@@ -61,7 +65,7 @@ ApplicationCommandTarget* AudioMenu::getNextCommandTarget()
 
 void AudioMenu::getAllCommands(Array<CommandID>& c)
 {
-	Array<CommandID> commands{ CommandIDs::configureAudio };
+	Array<CommandID> commands{ CommandIDs::configureAudio, CommandIDs::addPlugin };
 	c.addArray(commands);
 }
 
@@ -72,6 +76,10 @@ void AudioMenu::getCommandInfo(CommandID commandID, ApplicationCommandInfo& resu
 		case CommandIDs::configureAudio:
 			result.setInfo("Audio Options...", "Open audio settings menu.", "Menu", 0);
 			result.addDefaultKeypress('p', ModifierKeys::ctrlModifier);
+			break;
+		case CommandIDs::addPlugin:
+			result.setInfo("Add New Plugin...", "Open file browser for vst plugin", "Browser", 0);
+			result.addDefaultKeypress('a', ModifierKeys::ctrlModifier);
 			break;
 		default: break;
 	}
@@ -84,6 +92,9 @@ bool AudioMenu::perform(const InvocationInfo& info)
 	case CommandIDs::configureAudio:
 		openAudioOptionsMenu();
 		break;
+	case CommandIDs::addPlugin:
+		openPluginBrowser();
+		break;
 	default:
 		return false;
 	}
@@ -93,4 +104,10 @@ bool AudioMenu::perform(const InvocationInfo& info)
 
 void AudioMenu::openAudioOptionsMenu()
 {
+	invokedWindow.reset(new InvokedWindow(selector));
+}
+
+void AudioMenu::openPluginBrowser()
+{
+	currentColour = Colours::red;
 }
