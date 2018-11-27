@@ -20,10 +20,19 @@ MainComponent::MainComponent() :
 		true, // ability to select midi output device
 		true, // treat channels as stereo pairs
 		false), // hide advanced options
-	am(&audioSetupComp)
+	am(&audioSetupComp),
+	browser(13, File(), nullptr, nullptr)
 {
+	//audio init
+	player.setProcessor(&graph);
+	deviceManager.addAudioCallback(&player);
+
 	//toolbar init
 	addAndMakeVisible(am);
+
+	//keyboard init
+	keyboardComp.reset(new MidiKeyboardComponent(keyState, MidiKeyboardComponent::horizontalKeyboard));
+	addAndMakeVisible(keyboardComp.get());
 
 	//plugin viewer init
 	addAndMakeVisible(plugs);
@@ -34,6 +43,8 @@ MainComponent::MainComponent() :
 
 MainComponent::~MainComponent()
 {
+	player.setProcessor(nullptr);
+	deviceManager.removeAudioCallback(&player);
 }
 
 //==============================================================================
@@ -55,18 +66,17 @@ void MainComponent::resized()
 	auto area = getLocalBounds();
 	am.setBounds(area.removeFromTop(30));
 	currentSizeAsString = String(getWidth()) + " X " + String(getHeight());
-	plugs.setBounds(area.removeFromLeft(jmax(80, getLocalBounds().getWidth() / 4)));
+	keyboardComp->setBounds(area.removeFromBottom(jmax(60, area.getHeight() / 8)));
+	plugs.setBounds(area.removeFromLeft(jmax(80, area.getWidth() / 4)));
+	
 }
 
 void MainComponent::prepareToPlay(int, double) {}
 
 void MainComponent::getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill) {}
 
-void MainComponent::releaseResources() {}
-
-void MainComponent::showAudioDeviceSelector()
+void MainComponent::releaseResources() 
 {
-	
 }
 
 void MainComponent::getAllCommands(Array<CommandID>& c)
@@ -121,5 +131,13 @@ void MainComponent::openAudioOptionsMenu()
 
 void MainComponent::openPluginBrowser()
 {
-	
+	FileChooserDialogBox dialogBox("Load new plugin-in",
+		"",
+		browser,
+		true,
+		getLookAndFeel().findColour(ResizableWindow::backgroundColourId),
+		nullptr);
+
+	dialogBox.show();
+
 }

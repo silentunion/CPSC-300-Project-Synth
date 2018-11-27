@@ -89,25 +89,9 @@ bool AudioMenu::perform(const InvocationInfo& info)
 {
 	switch (info.commandID)
 	{
-	case CommandIDs::configureAudio:
-		openAudioOptionsMenu();
-		break;
-	case CommandIDs::addPlugin:
-		openPluginBrowser();
-		break;
-	default:
-		return false;
+
+		default: return false;
 	}
 
 	return true;
-}
-
-void AudioMenu::openAudioOptionsMenu()
-{
-	invokedWindow.reset(new InvokedWindow(selector));
-}
-
-void AudioMenu::openPluginBrowser()
-{
-	currentColour = Colours::red;
 }

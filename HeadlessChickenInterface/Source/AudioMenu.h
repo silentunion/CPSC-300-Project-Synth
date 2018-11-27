@@ -39,8 +39,6 @@ public:
 	ApplicationCommandTarget* getNextCommandTarget() override;
 	void getCommandInfo(CommandID commandID, ApplicationCommandInfo& result) override;
 	bool perform(const InvocationInfo& info) override;
-	void openAudioOptionsMenu();
-	void openPluginBrowser();
 
 private:
 	ApplicationCommandManager commandManager;

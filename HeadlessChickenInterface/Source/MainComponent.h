@@ -40,7 +40,6 @@ public:
 	void getCommandInfo(CommandID commandID, ApplicationCommandInfo& result) override;
 	bool perform(const InvocationInfo& info) override;
 	//Class specific functions
-	void showAudioDeviceSelector();
 	void openAudioOptionsMenu();
 	void openPluginBrowser();
 
@@ -51,6 +50,11 @@ private:
 	AudioMenu am;
 	PluginViewport plugs;
 	AudioDeviceSelectorComponent audioSetupComp;
+	MidiKeyboardState keyState;
+	std::unique_ptr<MidiKeyboardComponent> keyboardComp;
+	AudioProcessorPlayer player;
+	AudioProcessorGraph graph;
+	FileBrowserComponent browser;
 
 	class InvokedWindow : public DocumentWindow
 	{
