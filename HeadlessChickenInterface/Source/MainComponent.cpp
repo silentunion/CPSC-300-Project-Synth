@@ -18,7 +18,7 @@ MainComponent::MainComponent() :
 		256,   // maximum output channels
 		true, // ability to select midi inputs
 		true, // ability to select midi output device
-		true, // treat channels as stereo pairs
+		false, // treat channels as stereo pairs
 		false), // hide advanced options
 	am(&audioSetupComp),
 	browser(13, File(), nullptr, nullptr)
@@ -26,6 +26,7 @@ MainComponent::MainComponent() :
 	//audio init
 	player.setProcessor(&graph);
 	deviceManager.addAudioCallback(&player);
+	setAudioChannels(2, 2);
 
 	//toolbar init
 	addAndMakeVisible(am);
@@ -45,6 +46,7 @@ MainComponent::~MainComponent()
 {
 	player.setProcessor(nullptr);
 	deviceManager.removeAudioCallback(&player);
+	shutdownAudio();
 }
 
 //==============================================================================
