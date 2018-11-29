@@ -23,8 +23,7 @@ MainComponent::MainComponent() :
 	am(&pList),
 	browser(13, File(), nullptr, nullptr),
 	graph(new AudioProcessorGraph()),
-	gEditor(graph.get()),
-	plugs(&gEditor)
+	plugs(&plugViewer)
 {
 	//keyboard init
 	keyboardComp.reset(new MidiKeyboardComponent(keyState, MidiKeyboardComponent::horizontalKeyboard));
@@ -40,12 +39,15 @@ MainComponent::MainComponent() :
 	setAudioChannels(2, 2);
 
 	pManager.addDefaultFormats();
+	//pManager.addFormat(new VST3PluginFormat());
 
+	
 	//toolbar init
 	addAndMakeVisible(am);
 
 	//plugin viewer init
 	addAndMakeVisible(plugs);
+	
 
 	//window init
 	setSize (600, 400);
@@ -96,6 +98,7 @@ void MainComponent::getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill
 
 void MainComponent::releaseResources() 
 {
+	graph->releaseResources();
 }
 
 void MainComponent::getAllCommands(Array<CommandID>& c)
@@ -159,8 +162,13 @@ void MainComponent::openPluginBrowser()
 
 	dialogBox.show();
 
-	//pList.scanAndAddFile(browser.getSelectedFile().getFullPathName(), true, , pManager.getFormat());
+	for (int i = 0; i < pManager.getNumFormats(); i++)
+	{
+		auto * nform = pManager.getFormat(i);
 
+		pList.scanAndAddFile(browser.getSelectedFile(0).getFullPathName(), true, plugDescriptions, *nform);
+	}
+	for (PluginDescription* pd : plugDescriptions)plugViewer.addPlugin(pd->descriptiveName);
 }
 
 /*

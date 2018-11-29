@@ -12,6 +12,7 @@
 #include "PluginViewport.h"
 #include "AudioMenu.h"
 #include "SecondaryComponent.h"
+#include "PluginViewComponent.h"
 
 //==============================================================================
 /*
@@ -60,11 +61,13 @@ private:
 	AudioProcessorGraph::Node::Ptr audioInputNode;
 	AudioProcessorGraph::Node::Ptr audioOutputNode;
 	AudioProcessorGraph::Node::Ptr midiInputNode;
-	GenericAudioProcessorEditor gEditor;
+	//GenericAudioProcessorEditor gEditor;
 	//===============================================================================
 	KnownPluginList pList;
 	AudioPluginFormatManager pManager;
+	OwnedArray<PluginDescription> plugDescriptions;
 	FileBrowserComponent browser;
+	PluginViewComponent plugViewer;
 
 	class InvokedWindow : public DocumentWindow
 	{
