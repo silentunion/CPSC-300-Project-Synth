@@ -136,47 +136,36 @@ void ChickenSynthPluginAudioProcessor::processBlock (AudioBuffer<float>& buffer,
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-    // In case we have more outputs than inputs, this code clears any output
-    // channels that didn't contain input data, (because these aren't
-    // guaranteed to be empty - they may contain garbage).
-    // This is here to avoid people getting screaming feedback
-    // when they first compile a plugin, but obviously you don't need to keep
-    // this code if your algorithm always overwrites all the output channels.
-    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-        buffer.clear (i, 0, buffer.getNumSamples());
-
-
     auto* channelData0 = buffer.getWritePointer (0);
 	auto* channelData1 = buffer.getWritePointer (1);
 
 	int time;
+	keystate.processNextMidiBuffer(midiMessages, midiMessages.getFirstEventTime(), midiMessages.getNumEvents(), true);
 	for (MidiBuffer::Iterator i(midiMessages); i.getNextEvent(m, time);)
 	{
-		if (m.isNoteOn())
+		
+		updateAngleDelta();
+		for (auto sample = 0; sample < buffer.getNumSamples(); ++sample)
 		{
-			updateAngleDelta();
-			for (auto sample = 0; sample < buffer.getNumSamples(); ++sample)
+			uint8 newVolume = (uint8)volume;
+			if (m.isNoteOn())
 			{
-				auto currentSample = (float)std::sin(currentAngle);
+				auto currentSample = (float)std::sin(currentAngle)*((float)newVolume/127.0f);
 				currentAngle += angleDelta;
 				channelData0[sample] = currentSample;
 				channelData1[sample] = currentSample;
 			}
-		}
-		else if (m.isNoteOff())
-		{
-		}
-		else if (m.isAftertouch())
-		{
-		}
-		else if (m.isPitchWheel())
-		{
+			else if (m.isNoteOff())
+			{
+			}
+			else if (m.isAftertouch())
+			{
+			}
+			else if (m.isPitchWheel())
+			{
+			}
 		}
 	}
-
-
-
-
 
  }
 
@@ -203,6 +192,16 @@ void ChickenSynthPluginAudioProcessor::setStateInformation (const void* data, in
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+}
+
+void ChickenSynthPluginAudioProcessor::handleNoteOn(MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity)
+{
+	auto m = MidiMessage::noteOn(midiChannel, midiNoteNumber, velocity);
+}
+
+void ChickenSynthPluginAudioProcessor::handleNoteOff(MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity)
+{
+	auto m = MidiMessage::noteOff(midiChannel, midiNoteNumber);
 }
 
 //==============================================================================

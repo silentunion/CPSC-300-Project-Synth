@@ -15,7 +15,8 @@
 //==============================================================================
 /**
 */
-class ChickenSynthPluginAudioProcessor  : public AudioProcessor
+class ChickenSynthPluginAudioProcessor  : public AudioProcessor,
+										  public MidiKeyboardStateListener
 {
 public:
     //==============================================================================
@@ -62,11 +63,13 @@ public:
 		angleDelta = cyclesPerSample * 2.0 * MathConstants<double>::pi;
 	}
 
+	float volume;
+	MidiKeyboardState keystate;
 private:
+	void handleNoteOn(MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity) override;
+	void handleNoteOff(MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity) override;
     //==============================================================================
 	double currentSampleRate = 0.0, currentAngle = 0.0, angleDelta = 0.0;
-	double currentFrequency = 500.0, targetFrequency = 500.0;
-	float currentLevel = 0.1f, targetLevel = 0.1f;
 	MidiMessage m;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ChickenSynthPluginAudioProcessor)
 };
