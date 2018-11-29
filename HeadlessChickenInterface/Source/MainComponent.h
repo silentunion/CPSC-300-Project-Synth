@@ -42,6 +42,7 @@ public:
 	//Class specific functions
 	void openAudioOptionsMenu();
 	void openPluginBrowser();
+	void resetAudioGraph();
 
 private:
     //==============================================================================
@@ -53,7 +54,16 @@ private:
 	MidiKeyboardState keyState;
 	std::unique_ptr<MidiKeyboardComponent> keyboardComp;
 	AudioProcessorPlayer player;
-	AudioProcessorGraph graph;
+
+	//Audio Graph Parts
+	std::unique_ptr<AudioProcessorGraph> graph;
+	AudioProcessorGraph::Node::Ptr audioInputNode;
+	AudioProcessorGraph::Node::Ptr audioOutputNode;
+	AudioProcessorGraph::Node::Ptr midiInputNode;
+	GenericAudioProcessorEditor gEditor;
+	//===============================================================================
+	KnownPluginList pList;
+	AudioPluginFormatManager pManager;
 	FileBrowserComponent browser;
 
 	class InvokedWindow : public DocumentWindow

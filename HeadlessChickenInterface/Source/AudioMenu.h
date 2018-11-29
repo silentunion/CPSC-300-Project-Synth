@@ -27,7 +27,7 @@ public:
 		addPlugin
 	};
 
-    AudioMenu(AudioDeviceSelectorComponent * s);
+    AudioMenu(KnownPluginList * kp);
     ~AudioMenu();
 
 	void paint(Graphics&) override;
@@ -43,7 +43,7 @@ public:
 private:
 	ApplicationCommandManager commandManager;
 	std::unique_ptr<MenuBarComponent> menuBar;
-	AudioDeviceSelectorComponent * selector;
+	KnownPluginList * kpList;
 	Colour currentColour;
 
 	class InvokedWindow : public DocumentWindow

@@ -18,13 +18,14 @@
 class PluginViewport    : public Viewport
 {
 public:
-    PluginViewport();
+    PluginViewport(GenericAudioProcessorEditor * e);
     ~PluginViewport();
 
     void paint (Graphics&) override;
-    void resized() override;
+	void resized() override;
 
 private:
 	//PluginListComponent plugins;
+	GenericAudioProcessorEditor * editor;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginViewport)
 };

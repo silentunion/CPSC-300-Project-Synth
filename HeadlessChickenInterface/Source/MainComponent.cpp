@@ -20,20 +20,29 @@ MainComponent::MainComponent() :
 		true, // ability to select midi output device
 		false, // treat channels as stereo pairs
 		false), // hide advanced options
-	am(&audioSetupComp),
-	browser(13, File(), nullptr, nullptr)
+	am(&pList),
+	browser(13, File(), nullptr, nullptr),
+	graph(new AudioProcessorGraph()),
+	gEditor(graph.get()),
+	plugs(&gEditor)
 {
-	//audio init
-	player.setProcessor(&graph);
-	deviceManager.addAudioCallback(&player);
-	setAudioChannels(2, 2);
-
-	//toolbar init
-	addAndMakeVisible(am);
-
 	//keyboard init
 	keyboardComp.reset(new MidiKeyboardComponent(keyState, MidiKeyboardComponent::horizontalKeyboard));
 	addAndMakeVisible(keyboardComp.get());
+	
+	//audio init
+	graph->enableAllBuses();
+	player.setProcessor(graph.get());
+	deviceManager.addAudioCallback(&player);
+	auto midi = keyboardComp->getName();
+	deviceManager.setMidiInputEnabled(midi, true);
+	deviceManager.addMidiInputCallback(midi, &player);
+	setAudioChannels(2, 2);
+
+	pManager.addDefaultFormats();
+
+	//toolbar init
+	addAndMakeVisible(am);
 
 	//plugin viewer init
 	addAndMakeVisible(plugs);
@@ -46,6 +55,11 @@ MainComponent::~MainComponent()
 {
 	player.setProcessor(nullptr);
 	deviceManager.removeAudioCallback(&player);
+
+	auto midi = keyboardComp->getName();
+	deviceManager.setMidiInputEnabled(midi, false);
+	deviceManager.removeMidiInputCallback(midi, &player);
+
 	shutdownAudio();
 }
 
@@ -73,7 +87,10 @@ void MainComponent::resized()
 	
 }
 
-void MainComponent::prepareToPlay(int, double) {}
+void MainComponent::prepareToPlay(int, double)
+{
+	//graph->setPlayConfigDetails();
+}
 
 void MainComponent::getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill) {}
 
@@ -142,4 +159,25 @@ void MainComponent::openPluginBrowser()
 
 	dialogBox.show();
 
+	//pList.scanAndAddFile(browser.getSelectedFile().getFullPathName(), true, , pManager.getFormat());
+
+}
+
+/*
+Adapted from Brett G Porter: 
+https://artandlogic.com/2013/02/developing-audio-applications-with-juce-part-1/
+On Nov. 26 2018
+*/
+void MainComponent::resetAudioGraph()
+{
+	graph->clear();
+
+	auto inputNode  = graph->addNode(
+		new AudioProcessorGraph::AudioGraphIOProcessor(AudioProcessorGraph::AudioGraphIOProcessor::audioInputNode)
+	);
+	auto outputNode = graph->addNode(
+		new AudioProcessorGraph::AudioGraphIOProcessor(AudioProcessorGraph::AudioGraphIOProcessor::audioOutputNode)
+	);
+
+	graph->addConnection({ {inputNode->nodeID, 0}, {outputNode->nodeID, 1} });
 }

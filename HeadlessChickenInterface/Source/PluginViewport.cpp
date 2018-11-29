@@ -12,10 +12,11 @@
 #include "PluginViewport.h"
 
 //==============================================================================
-PluginViewport::PluginViewport()
+PluginViewport::PluginViewport(GenericAudioProcessorEditor * e)
 {
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
+	editor = e;
 }
 
 PluginViewport::~PluginViewport()
@@ -36,15 +37,14 @@ void PluginViewport::paint (Graphics& g)
     g.setColour (Colours::grey);
     g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
 
-    g.setColour (Colours::white);
-    g.setFont (14.0f);
-    g.drawText ("PluginViewport", getLocalBounds(),
-                Justification::centred, true);   // draw some placeholder text
+    //g.setColour (Colours::white);
+    //g.setFont (14.0f);
+    //g.drawText ("PluginViewport", getLocalBounds(),
+             //   Justification::centred, true);   // draw some placeholder text
 }
 
 void PluginViewport::resized()
 {
-    // This method is where you should set the bounds of any child
-    // components that your component contains..
+	editor->setBounds(getLocalBounds());
 
 }

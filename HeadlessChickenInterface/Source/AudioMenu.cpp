@@ -12,9 +12,9 @@
 #include "AudioMenu.h"
 
 //==============================================================================
-AudioMenu::AudioMenu(AudioDeviceSelectorComponent * s)
+AudioMenu::AudioMenu(KnownPluginList * kp)
 {
-	selector = s;
+	kpList = kp;
 	
 	currentColour = getLookAndFeel().findColour(ResizableWindow::backgroundColourId);
 	menuBar.reset(new MenuBarComponent(this));
@@ -42,7 +42,7 @@ void AudioMenu::resized()
 
 StringArray AudioMenu::getMenuBarNames()
 {
-	return { "Config" };
+	return { "Config", "Plugins" };
 }
 
 PopupMenu AudioMenu::getMenuForIndex(int menuIndex, const String&)
@@ -53,6 +53,10 @@ PopupMenu AudioMenu::getMenuForIndex(int menuIndex, const String&)
 	{
 		menu.addCommandItem(&commandManager, CommandIDs::configureAudio);
 		menu.addCommandItem(&commandManager, CommandIDs::addPlugin);
+	}
+	if (menuIndex == 1)
+	{
+		kpList->addToMenu(menu, KnownPluginList::SortMethod::defaultOrder);
 	}
 
 	return menu;
