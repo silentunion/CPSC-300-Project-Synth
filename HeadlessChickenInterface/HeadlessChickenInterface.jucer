@@ -4,6 +4,14 @@
               jucerVersion="5.4.1" companyName="Headless Chicken Brigade">
   <MAINGROUP id="g4JyLx" name="HeadlessChickenInterface">
     <GROUP id="{2F8EE120-CE61-CD28-312C-460B92DDF402}" name="Source">
+      <FILE id="qUqUjP" name="PluginViewComponent.cpp" compile="1" resource="0"
+            file="Source/PluginViewComponent.cpp"/>
+      <FILE id="riYYmy" name="SecondaryComponent.cpp" compile="1" resource="0"
+            file="Source/SecondaryComponent.cpp"/>
+      <FILE id="Eodm6V" name="SecondaryComponent.h" compile="1" resource="0"
+            file="Source/SecondaryComponent.h"/>
+      <FILE id="FcdqHN" name="PluginViewComponent.h" compile="0" resource="0"
+            file="Source/PluginViewComponent.h"/>
       <FILE id="ss7y57" name="AudioMenu.cpp" compile="1" resource="0" file="Source/AudioMenu.cpp"/>
       <FILE id="kYWTXp" name="AudioMenu.h" compile="1" resource="0" file="Source/AudioMenu.h"/>
       <FILE id="JbsiRZ" name="PluginViewport.cpp" compile="1" resource="0"
@@ -36,6 +44,7 @@
         <MODULEPATH id="juce_audio_devices" path="C:/Users/Duncan/AppData/Local/JUCE/modules"/>
         <MODULEPATH id="juce_audio_formats" path="C:/Users/Duncan/AppData/Local/JUCE/modules"/>
         <MODULEPATH id="juce_audio_processors" path="C:/Users/Duncan/AppData/Local/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="C:/Users/Duncan/AppData/Local/JUCE/modules"/>
       </MODULEPATHS>
     </VS2017>
   </EXPORTFORMATS>
@@ -44,6 +53,7 @@
     <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
     <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
     <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
     <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
     <MODULE id="juce_cryptography" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
     <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>

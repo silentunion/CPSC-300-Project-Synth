@@ -12,8 +12,11 @@
 #include "AudioMenu.h"
 
 //==============================================================================
-AudioMenu::AudioMenu()
+AudioMenu::AudioMenu(KnownPluginList * kp)
 {
+	kpList = kp;
+	
+	currentColour = getLookAndFeel().findColour(ResizableWindow::backgroundColourId);
 	menuBar.reset(new MenuBarComponent(this));
 	addAndMakeVisible(menuBar.get());
 	setApplicationCommandManagerToWatch(&commandManager);
@@ -29,7 +32,7 @@ AudioMenu::~AudioMenu()
 
 void AudioMenu::paint(Graphics& g)
 {
-	g.fillAll(getLookAndFeel().findColour(ResizableWindow::backgroundColourId).darker());
+	g.fillAll(currentColour);
 }
 
 void AudioMenu::resized()
@@ -39,7 +42,7 @@ void AudioMenu::resized()
 
 StringArray AudioMenu::getMenuBarNames()
 {
-	return { "Config" };
+	return { "Config", "Plugins" };
 }
 
 PopupMenu AudioMenu::getMenuForIndex(int menuIndex, const String&)
@@ -49,6 +52,11 @@ PopupMenu AudioMenu::getMenuForIndex(int menuIndex, const String&)
 	if (menuIndex == 0)
 	{
 		menu.addCommandItem(&commandManager, CommandIDs::configureAudio);
+		menu.addCommandItem(&commandManager, CommandIDs::addPlugin);
+	}
+	if (menuIndex == 1)
+	{
+		kpList->addToMenu(menu, KnownPluginList::SortMethod::defaultOrder);
 	}
 
 	return menu;
@@ -61,7 +69,7 @@ ApplicationCommandTarget* AudioMenu::getNextCommandTarget()
 
 void AudioMenu::getAllCommands(Array<CommandID>& c)
 {
-	Array<CommandID> commands{ CommandIDs::configureAudio };
+	Array<CommandID> commands{ CommandIDs::configureAudio, CommandIDs::addPlugin };
 	c.addArray(commands);
 }
 
@@ -73,6 +81,10 @@ void AudioMenu::getCommandInfo(CommandID commandID, ApplicationCommandInfo& resu
 			result.setInfo("Audio Options...", "Open audio settings menu.", "Menu", 0);
 			result.addDefaultKeypress('p', ModifierKeys::ctrlModifier);
 			break;
+		case CommandIDs::addPlugin:
+			result.setInfo("Add New Plugin...", "Open file browser for vst plugin", "Browser", 0);
+			result.addDefaultKeypress('a', ModifierKeys::ctrlModifier);
+			break;
 		default: break;
 	}
 }
@@ -81,16 +93,9 @@ bool AudioMenu::perform(const InvocationInfo& info)
 {
 	switch (info.commandID)
 	{
-	case CommandIDs::configureAudio:
-		openAudioOptionsMenu();
-		break;
-	default:
-		return false;
+
+		default: return false;
 	}
 
 	return true;
-}
-
-void AudioMenu::openAudioOptionsMenu()
-{
 }

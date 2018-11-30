@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    PluginViewport.h
-    Created: 24 Nov 2018 6:13:39pm
+    SecondaryComponent.h
+    Created: 25 Nov 2018 8:34:48pm
     Author:  Duncan
 
   ==============================================================================
@@ -11,22 +11,20 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "PluginViewComponent.h"
 
 //==============================================================================
 /*
 */
-class PluginViewport    : public Viewport
+class SecondaryComponent    : public Component
 {
 public:
-    PluginViewport(PluginViewComponent * e);
-    ~PluginViewport();
+    SecondaryComponent(AudioDeviceSelectorComponent * selector);
+    ~SecondaryComponent();
 
     void paint (Graphics&) override;
-	void resized() override;
+    void resized() override;
 
 private:
-	//PluginListComponent plugins;
-	PluginViewComponent * viewer;
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginViewport)
+	AudioDeviceSelectorComponent * audioSetupComp;
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SecondaryComponent)
 };

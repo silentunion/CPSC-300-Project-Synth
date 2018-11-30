@@ -1,9 +1,9 @@
 /*
   ==============================================================================
 
-    PluginViewport.h
-    Created: 24 Nov 2018 6:13:39pm
-    Author:  Duncan
+    PluginViewComponent.h
+    Created: 28 Nov 2018 7:34:22pm
+    Author:  MSi Reece
 
   ==============================================================================
 */
@@ -11,22 +11,22 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "PluginViewComponent.h"
 
 //==============================================================================
 /*
 */
-class PluginViewport    : public Viewport
+class PluginViewComponent    : public Component
 {
 public:
-    PluginViewport(PluginViewComponent * e);
-    ~PluginViewport();
+    PluginViewComponent();
+    ~PluginViewComponent();
 
     void paint (Graphics&) override;
-	void resized() override;
+    void resized() override;
+
+	void addPlugin(String s);
 
 private:
-	//PluginListComponent plugins;
-	PluginViewComponent * viewer;
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginViewport)
+	OwnedArray<String> plugNames;
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginViewComponent)
 };
